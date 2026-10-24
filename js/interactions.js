@@ -1,49 +1,101 @@
-// Hàm này được gọi từ file load-data.js sau khi dữ liệu CSV tải xong
+// --- BÀI 6.2: QUẢN LÝ BỘ LỌC NÚT BẤM ---
 const populateFilters = (data) => {
-    
-    // 1. TẠO GIAO DIỆN NÚT BẤM DỰA TRÊN MẢNG CONSTANTS
     d3.select("#filters_screen")
       .selectAll(".filter")
       .data(filters_screen)
       .join("button")
-      // Nếu nút đang isActive = true thì thêm class "active" để CSS tô màu vàng
       .attr("class", d => `filter ${d.isActive ? "active" : ""}`)
       .text(d => d.label)
-      // 2. BẮT SỰ KIỆN CLICK CHUỘT
       .on("click", (e, d) => {
-          // Bỏ qua nếu click vào nút đang bật sẵn
           if (d.isActive) return;
 
-          // Cập nhật trạng thái mảng: nút được click thì true, các nút khác false
           filters_screen.forEach(filter => {
               filter.isActive = filter.id === d.id;
           });
 
-          // Cập nhật lại giao diện CSS bằng cách gỡ/gắn class "active"
           d3.selectAll("#filters_screen .filter")
             .classed("active", filter => filter.id === d.id);
 
-          // Gọi hàm cập nhật biểu đồ
           updateHistogram(d.id, data);
       });
 
-    // 3. HÀM CẬP NHẬT BIỂU ĐỒ (Lọc dữ liệu + Hiệu ứng chuyển động)
     const updateHistogram = (filterId, allData) => {
-        // Lọc dữ liệu: Nếu chọn "all" thì lấy gốc, nếu chọn khác thì filter theo screenTech
         const updatedData = filterId === "all" 
             ? allData 
             : allData.filter(tv => tv.screenTech === filterId);
 
-        // Nhóm dữ liệu mới lọc vào các Bins
         const updatedBins = binGenerator(updatedData);
 
-        // Chọn các cột (rect) hiện có trên biểu đồ và nạp dữ liệu mới
         d3.selectAll("#histogram rect")
           .data(updatedBins)
-          .transition() // Bật hiệu ứng chuyển động
-          .duration(500) // Thời gian chuyển động: nửa giây (500 mili-giây)
-          .ease(d3.easeCubicInOut) // Kiểu chuyển động (nhanh dần ở giữa, chậm ở 2 đầu)
-          .attr("y", d => yScale(d.length)) // Chỉnh lại tọa độ Y mới
-          .attr("height", d => innerHeight - yScale(d.length)); // Chỉnh lại chiều cao mới
+          .transition()
+          .duration(500)
+          .ease(d3.easeCubicInOut)
+          .attr("y", d => yScale(d.length))
+          .attr("height", d => innerHeight - yScale(d.length));
     };
+};
+
+
+// --- BÀI 6.4: TẠO VÀ XỬ LÝ SỰ KIỆN TOOLTIP CHO SCATTERPLOT ---
+
+// 1. Hàm khởi tạo khung Tooltip
+const createTooltip = () => {
+    // Tạo một nhóm <g> chứa tooltip bên trong innerChartS của scatterplot
+    const tooltip = innerChartS.append("g")
+                              .attr("class", "tooltip")
+                              .style("opacity", 0) // Ban đầu ẩn đi
+                              .style("pointer-events", "none"); // Tránh cản trở sự kiện chuột
+
+    // Thêm hình chữ nhật nền cho tooltip
+    tooltip.append("rect")
+           .attr("width", tooltipWidth)
+           .attr("height", tooltipHeight)
+           .attr("rx", 3) // Bo tròn góc
+           .attr("ry", 3)
+           .attr("fill", barColor) // Màu nền xám đậm theo style chung
+           .attr("fill-opacity", 0.75); // Độ trong suốt
+
+    // Thêm chữ hiển thị bên trong tooltip
+    tooltip.append("text")
+           .text("NA")
+           .attr("x", tooltipWidth / 2)
+           .attr("y", tooltipHeight / 2 + 2)
+           .attr("text-anchor", "middle")
+           .attr("alignment-baseline", "middle")
+           .attr("fill", "white")
+           .style("font-size", "12px")
+           .style("font-family", "Roboto, sans-serif")
+           .style("font-weight", 900);
+};
+
+// 2. Hàm xử lý sự kiện khi di chuột (Mouse Events)
+const handleMouseEvents = () => {
+    innerChartS.selectAll("circle")
+               .on("mouseenter", (e, d) => {
+                   console.log("Mouse entered circle data:", d);
+
+                   // Cập nhật nội dung chữ trong tooltip thành kích thước màn hình (screenSize)
+                   d3.select(".tooltip text")
+                     .text(d.screenSize);
+
+                   // Lấy tọa độ cx, cy của chấm tròn đang được rê chuột vào
+                   const cx = e.target.getAttribute("cx");
+                   const cy = e.target.getAttribute("cy");
+
+                   // Dịch chuyển tooltip đến vị trí của chấm tròn (căn chỉnh cho đẹp mắt)
+                   d3.select(".tooltip")
+                     .attr("transform", `translate(${cx - 0.5 * tooltipWidth}, ${cy - 1.5 * tooltipHeight})`)
+                     .transition()
+                     .duration(200)
+                     .style("opacity", 1); // Hiện tooltip lên mượt mà
+               })
+               .on("mouseleave", (e, d) => {
+                   console.log("Mouse left circle data:", d);
+
+                   // Ẩn tooltip đi khi rê chuột ra ngoài
+                   d3.select(".tooltip")
+                     .style("opacity", 0)
+                     .attr("transform", "translate(0, 500)"); // Đẩy ra ngoài vùng nhìn thấy
+               });
 };
