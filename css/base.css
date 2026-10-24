@@ -101,3 +101,41 @@ p {
     font-weight: 300; /* Light weight for body text */
 
 }
+
+
+
+
+
+/* (Giữ nguyên toàn bộ code cũ ở phía trên của bạn) ... */
+
+/* --- THÊM MỚI: Định dạng cho các nút bấm Filters --- */
+#filters_screen {
+    margin: 10px 0px 5px;
+}
+
+.filter {
+    min-width: 80px;
+    margin: 0 5px;
+    padding: 8px 10px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 1;
+    color: #ffffff; /* Chữ trắng */
+    font-weight: 500;
+    background-color: #d2691e; /* Màu cam mặc định */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Hiệu ứng khi rê chuột hoặc khi nút đang được chọn (Active) */
+.filter:hover, .filter.active {
+    background-color: #ffb347; /* Cam nhạt hơn */
+    transition-timing-function: ease-out;
+}
+
+.filter.active {
+    cursor: default; /* Không hiện bàn tay khi đã click */
+    background-color: #ffcc80; /* Vàng cam báo hiệu đang chọn */
+}
