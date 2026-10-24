@@ -17,11 +17,13 @@
             <p>TV's vary considerably in energy consumption.</p>
         </div>
 
-        <!-- THÊM MỚI: Khung chứa các nút bấm (Filters) -->
         <div id="filters_screen"></div>
         
-        <!-- Khung chứa biểu đồ Histogram -->
+        <!-- Biểu đồ Histogram cũ -->
         <div id="histogram" class="responsive-svg-container"></div>
+
+        <!-- THÊM MỚI: Khung chứa Scatterplot cho bài 6.3 -->
+        <div id="scatterplot" class="responsive-svg-container"></div>
 
         <div class="body">
             <h3>Data source</h3>
@@ -38,11 +40,12 @@
         <p>&copy; Data Visualisation Week 6</p>
     </footer>
 
-    <!-- Gọi các script -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="js/load-data.js"></script>
     <script src="js/shared-constants.js"></script>
     <script src="js/interactions.js"></script>
     <script src="js/histogram.js"></script>
+    <!-- THÊM MỚI: File script vẽ Scatterplot -->
+    <script src="js/scatterplot.js"></script>
 </body>
 </html>
