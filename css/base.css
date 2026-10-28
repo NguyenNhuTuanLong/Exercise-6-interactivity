@@ -1,114 +1,65 @@
-/* Import Google Font */
-
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
- 
-
-/* General Reset */
-
 * {
-
     margin: 0;
-
     padding: 0;
-
     box-sizing: border-box;
-
 }
-
-
- 
 
 body {
-
-    font-family: 'Roboto', sans-serif; /* Modern and clean font */
-
+    font-family: 'Roboto', sans-serif;
     line-height: 1.6;
-
-    background-color: #fffaf0; /* Light cream background for warmth */
-
-    color: #5a3e2b; /* Dark brown text for readability */
-
-    margin: 0;
-
-    padding: 0;
-
+    background-color: #fffaf0;
+    color: #5a3e2b;
 }
 
+.top-nav {
+    width: 100%;
+    background-color: #333;
+    color: white;
+    padding: 15px 0;
+    display: flex;
+    justify-content: space-around;
+    font-weight: bold;
+}
 
- 
+.top-nav a { 
+    color: #4CAF50; 
+    text-decoration: none; 
+}
 
-/* Header/Banner */
+.top-nav a:hover { 
+    color: #81c784; 
+}
 
 header {
-
-    background-color: #d2691e; /* Warm orange */
-
-    color: #ffffff; /* White text */
-
+    background-color: #d2691e;
+    color: #ffffff;
     text-align: left;
-
-    padding: 20px 0;
-
-    padding-left: 20px;
-
+    padding: 20px 0 20px 20px;
 }
-
-
- 
 
 header h1 {
-
     font-size: 2.5rem;
-
-    font-weight: 700; /* Bold font for emphasis */
-
+    font-weight: 700;
 }
-
-
- 
-
-/* Main Content */
 
 main {
-
     padding: 20px;
-
 }
-
-
- 
 
 h1, h2, h3 {
-
-    color: #5a3e2b; /* Dark brown headings */
-
-    font-weight: 500; /* Medium weight for headings */
-
+    color: #5a3e2b;
+    font-weight: 500;
 }
-
-
- 
 
 p {
-
-    color: #5a3e2b; /* Dark brown text */
-
+    color: #5a3e2b;
     font-size: 1rem;
-
     line-height: 1.8;
-
-    font-weight: 300; /* Light weight for body text */
-
+    font-weight: 300;
 }
 
-
-
-
-
-/* (Giữ nguyên toàn bộ code cũ ở phía trên của bạn) ... */
-
-/* --- THÊM MỚI: Định dạng cho các nút bấm Filters --- */
 #filters_screen {
     margin: 10px 0px 5px;
 }
@@ -120,22 +71,26 @@ p {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     line-height: 1;
-    color: #ffffff; /* Chữ trắng */
+    color: #ffffff;
     font-weight: 500;
-    background-color: #d2691e; /* Màu cam mặc định */
+    background-color: #d2691e;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
 }
 
-/* Hiệu ứng khi rê chuột hoặc khi nút đang được chọn (Active) */
 .filter:hover, .filter.active {
-    background-color: #ffb347; /* Cam nhạt hơn */
-    transition-timing-function: ease-out;
+    background-color: #ffb347;
 }
 
 .filter.active {
-    cursor: default; /* Không hiện bàn tay khi đã click */
-    background-color: #ffcc80; /* Vàng cam báo hiệu đang chọn */
+    cursor: default;
+    background-color: #ffcc80;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #5a3e2b;
 }

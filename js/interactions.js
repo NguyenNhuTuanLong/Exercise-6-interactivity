@@ -1,4 +1,3 @@
-// --- BÀI 6.2: QUẢN LÝ BỘ LỌC NÚT BẤM ---
 const populateFilters = (data) => {
     d3.select("#filters_screen")
       .selectAll(".filter")
@@ -36,27 +35,20 @@ const populateFilters = (data) => {
     };
 };
 
-
-// --- BÀI 6.4: TẠO VÀ XỬ LÝ SỰ KIỆN TOOLTIP CHO SCATTERPLOT ---
-
-// 1. Hàm khởi tạo khung Tooltip
 const createTooltip = () => {
-    // Tạo một nhóm <g> chứa tooltip bên trong innerChartS của scatterplot
     const tooltip = innerChartS.append("g")
-                              .attr("class", "tooltip")
-                              .style("opacity", 0) // Ban đầu ẩn đi
-                              .style("pointer-events", "none"); // Tránh cản trở sự kiện chuột
+                               .attr("class", "tooltip")
+                               .style("opacity", 0)
+                               .style("pointer-events", "none");
 
-    // Thêm hình chữ nhật nền cho tooltip
     tooltip.append("rect")
            .attr("width", tooltipWidth)
            .attr("height", tooltipHeight)
-           .attr("rx", 3) // Bo tròn góc
+           .attr("rx", 3)
            .attr("ry", 3)
-           .attr("fill", barColor) // Màu nền xám đậm theo style chung
-           .attr("fill-opacity", 0.75); // Độ trong suốt
+           .attr("fill", barColor)
+           .attr("fill-opacity", 0.75);
 
-    // Thêm chữ hiển thị bên trong tooltip
     tooltip.append("text")
            .text("NA")
            .attr("x", tooltipWidth / 2)
@@ -69,33 +61,23 @@ const createTooltip = () => {
            .style("font-weight", 900);
 };
 
-// 2. Hàm xử lý sự kiện khi di chuột (Mouse Events)
 const handleMouseEvents = () => {
     innerChartS.selectAll("circle")
                .on("mouseenter", (e, d) => {
-                   console.log("Mouse entered circle data:", d);
+                   d3.select(".tooltip text").text(d.screenSize);
 
-                   // Cập nhật nội dung chữ trong tooltip thành kích thước màn hình (screenSize)
-                   d3.select(".tooltip text")
-                     .text(d.screenSize);
+                   const cx = parseFloat(e.target.getAttribute("cx"));
+                   const cy = parseFloat(e.target.getAttribute("cy"));
 
-                   // Lấy tọa độ cx, cy của chấm tròn đang được rê chuột vào
-                   const cx = e.target.getAttribute("cx");
-                   const cy = e.target.getAttribute("cy");
-
-                   // Dịch chuyển tooltip đến vị trí của chấm tròn (căn chỉnh cho đẹp mắt)
                    d3.select(".tooltip")
                      .attr("transform", `translate(${cx - 0.5 * tooltipWidth}, ${cy - 1.5 * tooltipHeight})`)
                      .transition()
                      .duration(200)
-                     .style("opacity", 1); // Hiện tooltip lên mượt mà
+                     .style("opacity", 1);
                })
-               .on("mouseleave", (e, d) => {
-                   console.log("Mouse left circle data:", d);
-
-                   // Ẩn tooltip đi khi rê chuột ra ngoài
+               .on("mouseleave", () => {
                    d3.select(".tooltip")
                      .style("opacity", 0)
-                     .attr("transform", "translate(0, 500)"); // Đẩy ra ngoài vùng nhìn thấy
+                     .attr("transform", "translate(0, 500)");
                });
 };

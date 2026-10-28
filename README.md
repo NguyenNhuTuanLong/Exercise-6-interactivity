@@ -1,1 +1,2 @@
-# W6_HISTOGRAM_INTERACTION
+# Exercise 6: Interactivity
+COS30045 - Data Visualisation
